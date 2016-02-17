@@ -19,7 +19,7 @@ type User struct {
 var dbmap = initDb()
 
 func initDb() *gorp.DbMap {
-	db, err := sql.Open("mysql", "root:@/myapi")
+	db, err := sql.Open("mysql", "root:@/heroku_bd61a0fcc69c3d9")
 	checkErr(err, "sql.Open failed")
 	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
 	dbmap.AddTableWithName(User{}, "User").SetKeys(true, "Id")
