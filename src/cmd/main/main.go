@@ -12,10 +12,11 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type User struct {
+type Book struct {
 	Id        int64  `db:"id" json:"id"`
-	Firstname string `db:"firstname" json:"firstname"`
-	Lastname  string `db:"lastname" json:"lastname"`
+	Title string `db:"title" json:"title"`
+	Author  string `db:"author" json:"author"`
+	Publisher string `db:"publisher" json:"publisher"`
 }
 
 var dbmap = initDb()
@@ -24,7 +25,7 @@ func initDb() *gorp.DbMap {
 	db, err := sql.Open("postgres", os.Getenv("HEROKU_POSTGRESQL_MAUVE_URL"))
 	checkErr(err, "sql.Open failed")
 	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.PostgresDialect{}}
-	dbmap.AddTableWithName(User{}, "User").SetKeys(true, "Id")
+	dbmap.AddTableWithName(Book{}, "Book").SetKeys(true, "Id")
 	err = dbmap.CreateTablesIfNotExists()
 	checkErr(err, "Create tables failed")
 
@@ -51,13 +52,13 @@ func main() {
 
 	v1 := r.Group("api/v1")
 	{
-		v1.GET("/users", GetUsers)
-		v1.GET("/users/:id", GetUser)
-		v1.POST("/users", PostUser)
-		v1.PUT("/users/:id", UpdateUser)
-		v1.DELETE("/users/:id", DeleteUser)
-		v1.OPTIONS("/users", OptionsUser)     // POST
-		v1.OPTIONS("/users/:id", OptionsUser) // PUT, DELETE
+		v1.GET("/books", GetBooks)
+		v1.GET("/books/:id", GetBook)
+		v1.POST("/books", PostBook)
+		v1.PUT("/books/:id", UpdateBook)
+		v1.DELETE("/books/:id", DeleteBook)
+		v1.OPTIONS("/books", OptionsBook)
+		v1.OPTIONS("/books/:id", OptionsBook)
 	}
 
 	port := os.Getenv("PORT")
@@ -68,55 +69,53 @@ func main() {
 	r.Run(":" + port)
 }
 
-func GetUsers(c *gin.Context) {
-	var users []User
-	_, err := dbmap.Select(&users, "SELECT * FROM user")
+func GetBooks(c *gin.Context) {
+	var books []Book
+	_, err := dbmap.Select(&books, "SELECT * FROM book")
 
 	if err == nil {
-		c.JSON(200, users)
+		c.JSON(200, books)
 	} else {
-		c.JSON(404, gin.H{"error": "no user(s) into the table"})
+		c.JSON(404, gin.H{"error": "no book(s) in the table"})
 	}
-
-	// curl -i http://localhost:8080/api/v1/users
 }
 
-func GetUser(c *gin.Context) {
+func GetBook(c *gin.Context) {
 	id := c.Params.ByName("id")
-	var user User
-	err := dbmap.SelectOne(&user, "SELECT * FROM user WHERE id=? LIMIT 1", id)
+	var book Book
+	err := dbmap.SelectOne(&book, "SELECT * FROM book WHERE id=? LIMIT 1", id)
 
 	if err == nil {
-		user_id, _ := strconv.ParseInt(id, 0, 64)
+		book_id, _ := strconv.ParseInt(id, 0, 64)
 
-		content := &User{
-			Id:        user_id,
-			Firstname: user.Firstname,
-			Lastname:  user.Lastname,
+		content := &Book{
+			Id:        	book_id,
+			Title: 		book.Title,
+			Author:  	book.Author,
+			Publisher: 	book.Publisher,
 		}
 		c.JSON(200, content)
 	} else {
-		c.JSON(404, gin.H{"error": "user not found"})
+		c.JSON(404, gin.H{"error": "book not found"})
 	}
-
-	// curl -i http://localhost:8080/api/v1/users/1
 }
 
-func PostUser(c *gin.Context) {
-	var user User
-	c.Bind(&user)
+func PostBook(c *gin.Context) {
+	var book Book
+	c.Bind(&book)
 
-	log.Println(user)
+	log.Println(book)
 
-	if user.Firstname != "" && user.Lastname != "" {
+	if book.Firstname != "" && book.Lastname != "" {
 
-		if insert, _ := dbmap.Exec(`INSERT INTO user (firstname, lastname) VALUES (?, ?)`, user.Firstname, user.Lastname); insert != nil {
-			user_id, err := insert.LastInsertId()
+		if insert, _ := dbmap.Exec(`INSERT INTO book (title, author, publisher) VALUES (?, ?, ?)`, book.Title, book.Author, book.Publisher); insert != nil {
+			book_id, err := insert.LastInsertId()
 			if err == nil {
-				content := &User{
-					Id:        user_id,
-					Firstname: user.Firstname,
-					Lastname:  user.Lastname,
+				content := &Book{
+					Id:        	book_id,
+					Title: 		book.Title,
+					Author:  	book.Author,
+					Publisher: 	book.Publisher,
 				}
 				c.JSON(201, content)
 			} else {
@@ -127,32 +126,31 @@ func PostUser(c *gin.Context) {
 	} else {
 		c.JSON(400, gin.H{"error": "Fields are empty"})
 	}
-
-	// curl -i -X POST -H "Content-Type: application/json" -d "{ \"firstname\": \"Thea\", \"lastname\": \"Queen\" }" http://localhost:8080/api/v1/users
 }
 
-func UpdateUser(c *gin.Context) {
+func UpdateBook(c *gin.Context) {
 	id := c.Params.ByName("id")
-	var user User
-	err := dbmap.SelectOne(&user, "SELECT * FROM user WHERE id=?", id)
+	var book Book
+	err := dbmap.SelectOne(&book, "SELECT * FROM book WHERE id=?", id)
 
 	if err == nil {
-		var json User
+		var json Book
 		c.Bind(&json)
 
-		user_id, _ := strconv.ParseInt(id, 0, 64)
+		book_id, _ := strconv.ParseInt(id, 0, 64)
 
-		user := User{
-			Id:        user_id,
-			Firstname: json.Firstname,
-			Lastname:  json.Lastname,
+		book := Book{
+			Id:        	book_id,
+			Title: 		book.Title,
+			Author:  	book.Author,
+			Publisher: 	book.Publisher,
 		}
 
-		if user.Firstname != "" && user.Lastname != "" {
-			_, err = dbmap.Update(&user)
+		if book.Firstname != "" && book.Lastname != "" {
+			_, err = dbmap.Update(&book)
 
 			if err == nil {
-				c.JSON(200, user)
+				c.JSON(200, book)
 			} else {
 				checkErr(err, "Updated failed")
 			}
@@ -162,20 +160,18 @@ func UpdateUser(c *gin.Context) {
 		}
 
 	} else {
-		c.JSON(404, gin.H{"error": "user not found"})
+		c.JSON(404, gin.H{"error": "book not found"})
 	}
-
-	// curl -i -X PUT -H "Content-Type: application/json" -d "{ \"firstname\": \"Thea\", \"lastname\": \"Merlyn\" }" http://localhost:8080/api/v1/users/1
 }
 
-func DeleteUser(c *gin.Context) {
+func DeleteBook(c *gin.Context) {
 	id := c.Params.ByName("id")
 
-	var user User
-	err := dbmap.SelectOne(&user, "SELECT * FROM user WHERE id=?", id)
+	var book Book
+	err := dbmap.SelectOne(&book, "SELECT * FROM book WHERE id=?", id)
 
 	if err == nil {
-		_, err = dbmap.Delete(&user)
+		_, err = dbmap.Delete(&book)
 
 		if err == nil {
 			c.JSON(200, gin.H{"id #" + id: "deleted"})
@@ -184,13 +180,11 @@ func DeleteUser(c *gin.Context) {
 		}
 
 	} else {
-		c.JSON(404, gin.H{"error": "user not found"})
+		c.JSON(404, gin.H{"error": "book not found"})
 	}
-
-	// curl -i -X DELETE http://localhost:8080/api/v1/users/1
 }
 
-func OptionsUser(c *gin.Context) {
+func OptionsBook(c *gin.Context) {
 	c.Writer.Header().Add("Access-Control-Allow-Origin", "*")
 	c.Writer.Header().Set("Access-Control-Allow-Methods", "DELETE,POST, PUT")
 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
