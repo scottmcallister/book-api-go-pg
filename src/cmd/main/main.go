@@ -11,7 +11,7 @@ import (
 )
 
 type Book struct {
-	Id        int64  `db:"id, primarykey, autoincrement" json:"id"`
+	Id        int64  `db:"id" json:"id"`
 	Title string `db:"title" json:"title"`
 	Author  string `db:"author" json:"author"`
 	Publisher string `db:"publisher" json:"publisher"`
@@ -23,7 +23,7 @@ func initDb() *gorp.DbMap {
 	db, err := sql.Open("postgres", os.Getenv("HEROKU_POSTGRESQL_MAUVE_URL"))
 	checkErr(err, "sql.Open failed")
 	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.PostgresDialect{}}
-	dbmap.AddTableWithName(Book{}, "Book").SetKeys(true, "Id")
+	dbmap.AddTableWithName(Book{}, "book").SetKeys(true, "id")
 	err = dbmap.CreateTablesIfNotExists()
 	checkErr(err, "Create tables failed")
 
