@@ -106,7 +106,7 @@ func PostBook(c *gin.Context) {
 
 	if book.Title != "" && book.Author != "" && book.Publisher != ""{
 
-		if insert, _ := dbmap.Exec(`INSERT INTO book (title, author, publisher) VALUES ($1, $1, $1)`, book.Title, book.Author, book.Publisher); insert != nil {
+		if insert, _ := dbmap.Exec(`INSERT INTO book (title, author, publisher) VALUES ($1, $2, $3)`, book.Title, book.Author, book.Publisher); insert != nil {
 			book_id, err := insert.LastInsertId()
 			if err == nil {
 				content := &Book{
