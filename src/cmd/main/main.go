@@ -2,12 +2,10 @@ package main
 
 import (
 	"os"
-
 	"database/sql"
 	"gopkg.in/gorp.v1"
 	"log"
 	"strconv"
-
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 )
