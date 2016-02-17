@@ -106,7 +106,7 @@ func PostBook(c *gin.Context) {
 
 	log.Println(book)
 
-	if book.Firstname != "" && book.Lastname != "" {
+	if book.Title != "" && book.Author != "" && book.Publisher != ""{
 
 		if insert, _ := dbmap.Exec(`INSERT INTO book (title, author, publisher) VALUES (?, ?, ?)`, book.Title, book.Author, book.Publisher); insert != nil {
 			book_id, err := insert.LastInsertId()
@@ -146,7 +146,7 @@ func UpdateBook(c *gin.Context) {
 			Publisher: 	book.Publisher,
 		}
 
-		if book.Firstname != "" && book.Lastname != "" {
+		if book.Title != "" && book.Author != "" && book.Publisher != "" {
 			_, err = dbmap.Update(&book)
 
 			if err == nil {
