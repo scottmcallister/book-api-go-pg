@@ -57,6 +57,12 @@
 			"repository": "https://gopkg.in/go-playground/validator.v8",
 			"revision": "f38559b4893a333e7122cf42155be352c9b5d7c6",
 			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/gorp.v1",
+			"repository": "https://gopkg.in/gorp.v1",
+			"revision": "c87af80f3cc5036b55b83d77171e156791085e2e",
+			"branch": "master"
 		}
 	]
 }
