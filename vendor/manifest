@@ -40,6 +40,13 @@
 			"branch": "master"
 		},
 		{
+			"importpath": "golang.org/x/net/context",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "b6d7b1396ec874c3b00f6c84cd4301a17c56c8ed",
+			"branch": "master",
+			"path": "/context"
+		},
+		{
 			"importpath": "gopkg.in/go-playground/validator.v8",
 			"repository": "https://gopkg.in/go-playground/validator.v8",
 			"revision": "f38559b4893a333e7122cf42155be352c9b5d7c6",
