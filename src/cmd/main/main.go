@@ -81,7 +81,7 @@ func GetBooks(c *gin.Context) {
 func GetBook(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var book Book
-	err := dbmap.SelectOne(&book, "SELECT * FROM book WHERE id=? LIMIT 1", id)
+	err := dbmap.SelectOne(&book, "SELECT * FROM book WHERE id=$1 LIMIT 1", id)
 
 	if err == nil {
 		book_id, _ := strconv.ParseInt(id, 0, 64)
@@ -106,7 +106,7 @@ func PostBook(c *gin.Context) {
 
 	if book.Title != "" && book.Author != "" && book.Publisher != ""{
 
-		if insert, _ := dbmap.Exec(`INSERT INTO book (title, author, publisher) VALUES (?, ?, ?)`, book.Title, book.Author, book.Publisher); insert != nil {
+		if insert, _ := dbmap.Exec(`INSERT INTO book (title, author, publisher) VALUES ($1, $1, $1)`, book.Title, book.Author, book.Publisher); insert != nil {
 			book_id, err := insert.LastInsertId()
 			if err == nil {
 				content := &Book{
@@ -118,6 +118,7 @@ func PostBook(c *gin.Context) {
 				c.JSON(201, content)
 			} else {
 				checkErr(err, "Insert failed")
+				c.JSON(400, gin.H{"error": "Insert failed"})
 			}
 		}
 
@@ -129,7 +130,7 @@ func PostBook(c *gin.Context) {
 func UpdateBook(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var book Book
-	err := dbmap.SelectOne(&book, "SELECT * FROM book WHERE id=?", id)
+	err := dbmap.SelectOne(&book, "SELECT * FROM book WHERE id=$1", id)
 
 	if err == nil {
 		var json Book
@@ -166,7 +167,7 @@ func DeleteBook(c *gin.Context) {
 	id := c.Params.ByName("id")
 
 	var book Book
-	err := dbmap.SelectOne(&book, "SELECT * FROM book WHERE id=?", id)
+	err := dbmap.SelectOne(&book, "SELECT * FROM book WHERE id=$1", id)
 
 	if err == nil {
 		_, err = dbmap.Delete(&book)
