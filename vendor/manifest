@@ -32,6 +32,12 @@
 			"repository": "https://github.com/manucorporat/stats",
 			"revision": "8f2d6ace262eba462e9beb552382c98be51d807b",
 			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/go-playground/validator.v8",
+			"repository": "https://gopkg.in/go-playground/validator.v8",
+			"revision": "f38559b4893a333e7122cf42155be352c9b5d7c6",
+			"branch": "master"
 		}
 	]
 }
