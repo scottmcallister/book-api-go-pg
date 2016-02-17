@@ -11,7 +11,7 @@ import (
 )
 
 type Book struct {
-	Id        int64  `db:"id" json:"id"`
+	Id        int64  `db:"id, primarykey, autoincrement" json:"id"`
 	Title string `db:"title" json:"title"`
 	Author  string `db:"author" json:"author"`
 	Publisher string `db:"publisher" json:"publisher"`
