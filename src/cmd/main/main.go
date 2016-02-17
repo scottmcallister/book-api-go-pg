@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"database/sql"
 	"gopkg.in/gorp.v1"
 	"log"
