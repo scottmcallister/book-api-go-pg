@@ -118,7 +118,6 @@ func PostBook(c *gin.Context) {
 				c.JSON(201, content)
 			} else {
 				checkErr(err, "Insert failed")
-				c.JSON(400, gin.H{"error": "Insert failed"})
 			}
 		}
 
@@ -140,9 +139,9 @@ func UpdateBook(c *gin.Context) {
 
 		book := Book{
 			Id:        	book_id,
-			Title: 		book.Title,
-			Author:  	book.Author,
-			Publisher: 	book.Publisher,
+			Title: 		json.Title,
+			Author:  	json.Author,
+			Publisher: 	json.Publisher,
 		}
 
 		if book.Title != "" && book.Author != "" && book.Publisher != "" {
