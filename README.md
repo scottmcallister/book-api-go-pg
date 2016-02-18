@@ -3,6 +3,8 @@
 This is a REST API for books written in Go that connects to a Postgres database. The app is provisioned for Heroku deployment using GB
 dependency management. A running instance of this API can be found here: [http://rest-api-go-sql.herokuapp.com/api/v1/books](http://rest-api-go-sql.herokuapp.com/api/v1/books)
 
+
+
 ##Get All Books
 Returns a complete list of every book in the database. The response is formatted as an array of JSON objects with each object representing a separate book. 
 ####Url
@@ -27,6 +29,8 @@ Returns a complete list of every book in the database. The response is formatted
 ]
 ```
 
+
+
 ##Get One Book
 Returns a JSON object that represents a book in the database. 
 ####Url
@@ -43,6 +47,8 @@ Returns a JSON object that represents a book in the database.
 }
 ```
 
+
+
 ##Get Book Count
 Returns the total number of books in the database. 
 ####Url
@@ -53,6 +59,8 @@ Returns the total number of books in the database.
 ```javascript
 7
 ```
+
+
 
 ##Add a Book
 Adds a new book to the database. 
@@ -72,6 +80,8 @@ Adds a new book to the database.
   "success":"A book has been added to the database!"
 }
 ```
+
+
 
 ##Update Book
 Updates the information associated with a given book.
@@ -94,6 +104,8 @@ Updates the information associated with a given book.
   "publisher":"Bloomsbury"
 }
 ```
+
+
 
 ##Delete Book
 Removes a book entry from the database. 
