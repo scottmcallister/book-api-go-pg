@@ -5,13 +5,13 @@ dependency management. A running instance of this API can be found here: [http:/
 
 
 
-##Get All Books
+## Get All Books
 Returns a complete list of every book in the database. The response is formatted as an array of JSON objects with each object representing a separate book. 
-####Url
+#### Url
 `/api/v1/books`
-####Method
+#### Method
 `GET`
-####Response
+#### Response
 ```javascript
 [{
   "id":1,
@@ -31,13 +31,13 @@ Returns a complete list of every book in the database. The response is formatted
 
 
 
-##Get One Book
+## Get One Book
 Returns a JSON object that represents a book in the database. 
-####Url
+#### Url
 `/api/v1/book/:id`
-####Method
+#### Method
 `GET`
-####Response
+#### Response
 ```javascript
 {
   "id":7,
@@ -49,32 +49,32 @@ Returns a JSON object that represents a book in the database.
 
 
 
-##Get Book Count
+## Get Book Count
 Returns the total number of books in the database. 
-####Url
+#### Url
 `/api/v1/count`
-####Method
+#### Method
 `GET`
-####Response
+#### Response
 ```javascript
 7
 ```
 
 
 
-##Add a Book
+## Add a Book
 Adds a new book to the database. 
-####Url
+#### Url
 `/api/v1/books`
-####Method
+#### Method
 `POST`
-####Parameters
+#### Parameters
 | Key           | Value          |
 | ------------- |:--------------:|
 | Title         | text(required) |
 | Author        | text(required) |
 | Publisher     | text(required) |
-####Response
+#### Response
 ```javascript
 {
   "success":"A book has been added to the database!"
@@ -83,19 +83,19 @@ Adds a new book to the database.
 
 
 
-##Update Book
+## Update Book
 Updates the information associated with a given book.
-####Url
+#### Url
 `/api/v1/books/:id`
-####Method
+#### Method
 `PUT`
-####Parameters
+#### Parameters
 | Key           | Value          |
 | ------------- |:--------------:|
 | Title         | text(required) |
 | Author        | text(required) |
 | Publisher     | text(required) |
-####Response
+#### Response
 ```javascript
 {
   "id":2,
@@ -107,13 +107,13 @@ Updates the information associated with a given book.
 
 
 
-##Delete Book
+## Delete Book
 Removes a book entry from the database. 
-####Url
+#### Url
 `/api/v1/book/:id`
-####Method
+#### Method
 `GET`
-####Response
+#### Response
 ```javascript
 {
   "id":1,
