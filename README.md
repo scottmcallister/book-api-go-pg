@@ -1,8 +1,7 @@
 # book-api-go-pg
 
 This is a REST API for books written in Go that connects to a Postgres database. The app is provisioned for Heroku deployment using GB
-dependency management. A running instance of this API can be found here: [http://rest-api-go-sql.herokuapp.com/api/v1/books](http://rest-api-go-sql.herokuapp.com/api/v1/books)
-
+dependency management. 
 
 
 ## Get All Books
